@@ -1,0 +1,35 @@
+{
+  "name": "NINGYUAN DIANKUN / 宁远电鲲",
+  "project": "SHIP 3D V3.0",
+  "file": "ningyuan-diankun.glb",
+  "format": "glTF 2.0 Binary",
+  "version": "3.0.0",
+  "generatedAt": "2026-11-14",
+  "units": "meters",
+  "coordinateSystem": {
+    "up": "+Y",
+    "bow": "+X",
+    "starboard": "+Z",
+    "waterlineY": 0
+  },
+  "boundsMeters": {
+    "size": [128.09, 28.85, 22.6],
+    "center": [0.048, 7.925, 0]
+  },
+  "principalDimensions": {
+    "loa": 127.8,
+    "beam": 21.6,
+    "depth": 10.5,
+    "designDraft": 6.5
+  },
+  "meshCount": 219,
+  "instancedMeshCount": 0,
+  "animations": 0,
+  "texturesEmbedded": true,
+  "transform": "baked; InstancedMesh flattened for compatibility",
+  "included": "exterior hull, raised wrapped bow structure, curved bow windows, sharpened stem, full-width green aft deckhouse, roof solar array, deck equipment, livery",
+  "excluded": "conceptual energy system, dimension lines, interactive labels, water, lights",
+  "sha256": "F90F86DA7625C45AD2F8002C36C58BE70B552987BFBABA97E9126F822C998919",
+  "bytes": 2549072,
+  "dataBoundary": "M-tier visual reconstruction; not an official CAD or ship drawing"
+}

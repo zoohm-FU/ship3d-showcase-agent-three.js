@@ -1,0 +1,27 @@
+{
+  "name": "ship-3d-ningyuan-diankun",
+  "version": "3.0.0",
+  "private": true,
+  "description": "SHIP 3D V3.0 — 宁远电鲲纯电动智能船舶三维数字展示平台",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5174 --strictPort",
+    "build": "node scripts/build.mjs",
+    "preview": "vite preview --host 127.0.0.1 --port 4174 --strictPort",
+    "qa": "node tests/qa-v3.mjs",
+    "benchmark": "node tests/benchmark-v3.mjs",
+    "capture": "node tests/capture-previews.mjs",
+    "verify:model": "node tests/verify-glb.mjs",
+    "export:model": "node scripts/export-model.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.49.0",
+    "vite": "^6.0.0"
+  }
+}

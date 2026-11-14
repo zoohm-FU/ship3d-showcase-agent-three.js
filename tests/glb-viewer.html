@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GLB Verify / NINGYUAN DIANKUN</title>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #02090e; }
+      canvas { display: block; width: 100%; height: 100%; }
+      #hud {
+        position: fixed; top: 18px; left: 18px; z-index: 2;
+        color: #c8e6d8; font: 11px/1.6 Consolas, monospace;
+        padding: 12px 14px; border: 1px solid rgba(93, 231, 180, 0.3);
+        background: rgba(2, 12, 14, 0.75); white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hud">GLB VERIFY / LOADING</div>
+    <script type="module">
+      import * as THREE from 'three';
+      import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+      import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(1);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+      renderer.shadowMap.enabled = true;
+      document.body.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x031018);
+      const camera = new THREE.PerspectiveCamera(32, window.innerWidth / window.innerHeight, 0.1, 1500);
+      camera.position.set(155, 66, 165);
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 9, 0);
+      controls.enableDamping = true;
+      controls.update();
+
+      scene.add(new THREE.HemisphereLight(0x99c4cc, 0x030a0b, 1.0));
+      const key = new THREE.DirectionalLight(0xeffff7, 2.6);
+      key.position.set(95, 130, 80);
+      key.castShadow = true;
+      key.shadow.mapSize.set(2048, 2048);
+      scene.add(key);
+      const rim = new THREE.DirectionalLight(0x53d9cb, 1.6);
+      rim.position.set(-90, 48, -100);
+      scene.add(rim);
+
+      const water = new THREE.Mesh(
+        new THREE.PlaneGeometry(600, 600),
+        new THREE.MeshStandardMaterial({ color: 0x04171d, roughness: 0.36, metalness: 0.4 })
+      );
+      water.rotation.x = -Math.PI / 2;
+      water.receiveShadow = true;
+      scene.add(water);
+
+      let model = null;
+      new GLTFLoader().load(
+        '/models/ningyuan-diankun.glb',
+        (gltf) => {
+          model = gltf.scene;
+          scene.add(model);
+          model.updateMatrixWorld(true);
+          const box = new THREE.Box3().setFromObject(model);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
+          const meshes = [];
+          let instances = 0;
+          model.traverse((object) => {
+            if (object.isMesh) {
+              meshes.push(object);
+              if (object.isInstancedMesh) instances += 1;
+            }
+          });
+          window.__GLB_READY__ = {
+            meshes: meshes.length,
+            instancedMeshes: instances,
+            size: size.toArray(),
+            center: center.toArray(),
+            animations: gltf.animations.length
+          };
+          document.querySelector('#hud').textContent = [
+            'GLB VERIFY / OK',
+            `meshes ${meshes.length} / instanced ${instances}`,
+            'geometry baked for compatibility',
+            `size ${size.x.toFixed(1)} × ${size.y.toFixed(1)} × ${size.z.toFixed(1)} m`,
+            `bbox center ${center.x.toFixed(1)}, ${center.y.toFixed(1)}, ${center.z.toFixed(1)}`
+          ].join('\n');
+        },
+        undefined,
+        (error) => {
+          window.__GLB_ERROR__ = String(error);
+          document.querySelector('#hud').textContent = `GLB ERROR\n${error}`;
+        }
+      );
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      let elapsed = 0;
+      const clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        const delta = clock.getDelta();
+        elapsed += delta;
+        if (model) model.position.y = Math.sin(elapsed * 0.4) * 0.04;
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>

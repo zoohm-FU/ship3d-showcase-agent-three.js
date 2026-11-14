@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#041016" />
+    <meta
+      name="description"
+      content="SHIP 3D V3.0 — 宁远电鲲 740TEU 纯电动敞口集装箱船三维数字展示平台。基于实船照片与公开资料重建，非官方设计文件。"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23050f14'/%3E%3Cpath d='M32 7 55 20v24L32 57 9 44V20L32 7Z' fill='none' stroke='%2361e7c8' stroke-width='2'/%3E%3Cpath d='M20 38h24l-5 7H25l-5-7Z' fill='%2335e078' stroke='%2335e078'/%3E%3Cpath d='M34 16 26 31h6l-2 11 8-17h-6l2-9Z' fill='%23e9fff6'/%3E%3C/svg%3E"
+    />
+    <title>SHIP 3D V3 — 宁远电鲲 · 纯电动智能船舶</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <main class="app" id="app" data-mode="exterior">
+      <div class="page-atmosphere" aria-hidden="true">
+        <i class="page-atmosphere__gradient"></i>
+        <i class="page-atmosphere__noise"></i>
+        <i class="page-atmosphere__scan"></i>
+        <span class="page-atmosphere__text">ZERO EMISSION / NINGBO &amp; JIAXING</span>
+      </div>
+
+      <canvas id="scene-canvas" aria-label="宁远电鲲纯电动船舶三维模型，可拖动旋转并缩放"></canvas>
+      <div class="scene-vignette" aria-hidden="true"></div>
+      <div class="screen-grid" aria-hidden="true"></div>
+
+      <div class="stage-marks" aria-hidden="true">
+        <span class="stage-marks__ledger">V3.0 / 2026</span>
+      </div>
+
+      <div class="dimension-layer" id="dimension-layer" aria-hidden="true"></div>
+      <div class="hotspot-layer" id="hotspot-layer"></div>
+
+      <header class="topbar">
+        <a class="brand" href="#top" id="brand-home" aria-label="返回外观展示默认视角">
+          <svg class="brand__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path d="M24 3.2 43.4 14.4v19.2L24 44.8 4.6 33.6V14.4L24 3.2Z" stroke="currentColor" stroke-width=".9" />
+            <path d="M24 8.2 39 16.8v14.4L24 39.8 9 31.2V16.8L24 8.2Z" stroke="currentColor" stroke-opacity=".24" stroke-width=".65" />
+            <path d="M12 27.5h24l-5 6.4H17l-5-6.4Z" fill="currentColor" fill-opacity=".13" stroke="currentColor" stroke-width="1" />
+            <path d="M18.6 23h10.8l-1.8-4.7h-7.2L18.6 23Z" stroke="currentColor" stroke-width=".9" />
+            <path d="M27.5 8.5 20.6 22h5l-2.2 10.1 7.7-14.7h-5.1l1.5-8.9Z" fill="currentColor" fill-opacity=".86" />
+            <circle cx="24" cy="13.1" r=".9" fill="currentColor" />
+          </svg>
+          <span class="brand__copy">
+            <span class="brand__title">SHIP <b>3D</b></span>
+            <span class="brand__vessel">NINGYUAN DIANKUN <i>V3.0</i></span>
+          </span>
+        </a>
+
+        <nav class="mode-nav" aria-label="展示模式">
+          <button type="button" class="mode-btn is-active" data-mode="exterior">
+            <span class="mode-btn__index">01</span>
+            <span class="mode-btn__copy">外观展示<em>EXTERIOR</em></span>
+            <i class="mode-btn__line"></i>
+          </button>
+          <button type="button" class="mode-btn" data-mode="structure">
+            <span class="mode-btn__index">02</span>
+            <span class="mode-btn__copy">结构解析<em>STRUCTURE</em></span>
+            <i class="mode-btn__line"></i>
+          </button>
+          <button type="button" class="mode-btn" data-mode="energy">
+            <span class="mode-btn__index">03</span>
+            <span class="mode-btn__copy">能源系统<em>ENERGY</em></span>
+            <i class="mode-btn__line"></i>
+          </button>
+          <button type="button" class="mode-btn" data-mode="technical">
+            <span class="mode-btn__index">04</span>
+            <span class="mode-btn__copy">技术参数<em>TECHNICAL</em></span>
+            <i class="mode-btn__line"></i>
+          </button>
+        </nav>
+
+        <div class="topbar__right">
+          <button type="button" class="source-trigger js-open-sources" aria-haspopup="dialog">
+            <span class="source-trigger__icon" aria-hidden="true">◎</span>
+            资料来源
+          </button>
+          <div class="service-state" aria-label="运营状态">
+            <i></i>
+            <span>IN SERVICE<em>NINGBO — JIAXING</em></span>
+          </div>
+          <div class="mobile-tools">
+            <button type="button" data-open-panel="profile">资料</button>
+            <button type="button" data-open-panel="context">详情</button>
+          </div>
+        </div>
+      </header>
+
+      <aside class="panel panel--profile" id="profile-panel" data-panel="profile" aria-label="船舶档案">
+        <button type="button" class="panel__close" data-close-panel aria-label="收起船舶档案">×</button>
+        <div class="panel__head">
+          <span class="panel__index">01</span>
+          <span class="panel__kicker">VESSEL DOSSIER</span>
+          <span class="tier-chip tier-a">VERIFIED PROFILE</span>
+        </div>
+
+        <div class="vessel-identity">
+          <p class="eyebrow">PURE ELECTRIC SMART VESSEL / 2026</p>
+          <div class="vessel-name">
+            <h1>宁远电鲲</h1>
+            <span>NINGYUAN<br />DIANKUN</span>
+          </div>
+          <p class="vessel-type">740TEU 纯电动敞口集装箱船</p>
+          <div class="vessel-subtype">
+            <span>PURE ELECTRIC</span><i></i><span>OPEN-TOP CONTAINER SHIP</span>
+          </div>
+        </div>
+
+        <div class="key-metrics" id="key-metrics"></div>
+        <div class="dossier-facts" id="dossier-facts"></div>
+
+        <div class="model-disclosure">
+          <div class="model-disclosure__flag"><i></i>PHOTO-RECONSTRUCTED MODEL</div>
+          <p>依据项目方提供的实船照片与公开参数进行外观重建。非官方 CAD、线型图或实船完工模型。</p>
+          <button type="button" class="text-link js-open-sources">查看建模与数据口径 →</button>
+        </div>
+      </aside>
+
+      <aside class="panel panel--context" id="context-panel" data-panel="context" aria-label="当前模式详情">
+        <button type="button" class="panel__close" data-close-panel aria-label="收起详情面板">×</button>
+        <div id="context-body"></div>
+      </aside>
+
+      <div class="mode-banner" id="mode-banner" aria-live="polite">
+        <span class="mode-banner__no" id="mode-banner-no">01</span>
+        <div>
+          <span class="mode-banner__en" id="mode-banner-en">EXTERIOR</span>
+          <strong class="mode-banner__zh" id="mode-banner-zh">外观展示</strong>
+        </div>
+        <span class="mode-banner__line"></span>
+      </div>
+
+      <div class="data-toast" id="data-toast" role="status" aria-live="polite"></div>
+
+      <footer class="command-bar">
+        <div class="command-bar__hint">
+          <span class="mouse-hint" aria-hidden="true"></span>
+          <span><b>拖动</b>旋转</span><i></i><span><b>滚轮</b>缩放</span><i></i><span><b>R</b>重置</span>
+        </div>
+
+        <div class="camera-dock" role="group" aria-label="镜头与视图">
+          <button type="button" class="camera-key is-active" data-view="perspective" title="45° 透视 (1)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 20 7.6v8.8L12 21 4 16.4V7.6L12 3Z" /><path d="m4.3 7.7 7.7 4.4 7.7-4.4M12 12.1V21" /></svg>
+            <span>透视</span>
+          </button>
+          <button type="button" class="camera-key" data-view="front" title="正视 (2)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5.5h14v13H5z" /><path d="M8 9h8M8 14.8h8M12 2.4v1.8M12 19.8v1.8" /></svg>
+            <span>正视</span>
+          </button>
+          <button type="button" class="camera-key" data-view="side" title="侧视 (3)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.8 15.3h18.4l-2.6-5.3H7.1l-4.3 5.3Z" /><path d="M2.8 15.3h18.4v2.4H5.1l-2.3-2.4ZM9.7 10V7.3h4.6V10" /></svg>
+            <span>侧视</span>
+          </button>
+          <button type="button" class="camera-key" data-view="top" title="俯视 (4)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3.2 7.6 8.8L12 20.8 4.4 12 12 3.2Z" /><path d="M12 7.1v9.8M8.8 8.8h6.4" /></svg>
+            <span>俯视</span>
+          </button>
+          <button type="button" class="camera-key camera-key--toggle" id="auto-orbit" aria-pressed="false" title="自动旋转 (Space)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.6 8.3A8.3 8.3 0 1 0 20 14" /><path d="M19.8 3.8v5h-5" /></svg>
+            <span>自动</span>
+          </button>
+          <button type="button" class="camera-key" id="reset-camera" title="重置视角">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.7 8.8A8 8 0 1 1 4.1 14" /><path d="M4.7 4.1v5.2h5.2" /></svg>
+            <span>重置</span>
+          </button>
+        </div>
+
+        <div class="telemetry">
+          <div class="telemetry__cell"><span>FPS</span><b id="stat-fps">--</b></div>
+          <div class="telemetry__cell"><span>DRAW</span><b id="stat-draw">--</b></div>
+          <div class="telemetry__cell"><span>TRI</span><b id="stat-tri">--</b></div>
+          <div class="telemetry__cell"><span>GEO</span><b id="stat-geo">--</b></div>
+          <div class="telemetry__cell"><span>TEX</span><b id="stat-tex">--</b></div>
+          <button type="button" class="quality-cycle" id="quality-cycle" aria-label="切换渲染画质">
+            <span>QUALITY</span><b>AUTO</b>
+          </button>
+        </div>
+        <div class="command-bar__line" aria-hidden="true"><i></i></div>
+      </footer>
+
+      <div class="mobile-scrim" id="mobile-scrim" hidden></div>
+
+      <section class="loader" id="loader" role="status" aria-live="polite" aria-label="正在建立三维数字船舶">
+        <div class="loader__grid" aria-hidden="true"></div>
+        <div class="loader__topline"><span>SHIP 3D / V3.0</span><span>PHOTO-RECONSTRUCTION PIPELINE</span></div>
+        <div class="loader__center">
+          <div class="loader__glyph" aria-hidden="true">
+            <svg viewBox="0 0 80 80" fill="none">
+              <path d="M40 5 68 21v38L40 75 12 59V21L40 5Z" stroke="currentColor" stroke-width=".8" />
+              <path d="M40 13 61 25v30L40 67 19 55V25L40 13Z" stroke="currentColor" stroke-opacity=".22" stroke-width=".6" />
+              <path d="M20 47h40l-8 11H28L20 47Z" fill="currentColor" fill-opacity=".12" stroke="currentColor" />
+              <path d="m46 17-16 27h10l-5 19L53 36H43l3-19Z" fill="currentColor" />
+            </svg>
+          </div>
+          <p class="loader__eyebrow">NINGYUAN DIANKUN / PURE ELECTRIC SMART VESSEL</p>
+          <h2>宁远电鲲</h2>
+          <p class="loader__sub">SHIP 3D DIGITAL TWIN · V3.0</p>
+          <div class="loader__bar"><i id="loader-bar"></i></div>
+          <div class="loader__meta"><span id="loader-status">INITIALIZING WEBGL</span><b id="loader-percent">00%</b></div>
+          <div class="loader__tiers">
+            <span>A / OFFICIAL DATA</span><span>B / PUBLIC REPORT</span><span>C / TO VERIFY</span><span>M / RECONSTRUCTED</span>
+          </div>
+        </div>
+        <div class="loader__bottom"><span>N 29°52′ · E 121°33′</span><span>LOCAL DIGITAL TWIN</span></div>
+      </section>
+
+      <section class="fatal-error" id="fatal-error" hidden>
+        <div class="fatal-error__inner">
+          <p class="eyebrow">RENDERER / OFFLINE</p>
+          <h2>三维渲染未能启动</h2>
+          <p id="fatal-message">当前浏览器可能不支持 WebGL 2，或硬件加速被关闭。</p>
+          <button type="button" onclick="window.location.reload()">重新加载</button>
+        </div>
+      </section>
+
+      <dialog class="source-dialog" id="source-dialog">
+        <div class="source-dialog__inner">
+          <header class="source-dialog__head">
+            <div>
+              <p class="eyebrow">DATA GOVERNANCE / 资料口径</p>
+              <h2>数据来源与模型边界</h2>
+            </div>
+            <button type="button" class="source-dialog__close" data-close-sources aria-label="关闭资料来源">×</button>
+          </header>
+          <p class="source-dialog__lede">
+            真实参数按 A / B / C 来源等级标注；“内部电池布置、轴系、光伏位置、岸电接口”等未公开信息均作为
+            <b>概念可视化</b>展示，不代表实船内部结构。
+          </p>
+          <div class="source-dialog__body" id="source-dialog-body"></div>
+        </div>
+      </dialog>
+
+      <noscript>
+        <div class="noscript">SHIP 3D 需要启用 JavaScript 与 WebGL 才能运行。</div>
+      </noscript>
+    </main>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

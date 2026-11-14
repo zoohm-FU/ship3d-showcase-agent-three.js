@@ -1,0 +1,113 @@
+{
+  "project": "SHIP 3D V3.0 / 宁远电鲲",
+  "measuredAt": "2026-11-14T12:22:13.637Z",
+  "url": "http://127.0.0.1:4174/",
+  "environment": {
+    "gpu": "ANGLE (AMD, AMD Radeon RX 580 2048SP (0x00006FDF) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (AMD)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36 Edg/157.0.0.0",
+    "devicePixelRatio": 1,
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "hardwareConcurrency": 12,
+    "webglVersion": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "quality": {
+    "high": {
+      "fpsAverage": 59.7,
+      "fpsMin": 59.6,
+      "fpsSamples": [
+        59.6,
+        60,
+        59.8,
+        59.8,
+        59.6
+      ],
+      "drawCalls": 391,
+      "triangles": 54202,
+      "geometries": 201,
+      "textures": 28,
+      "detailLevel": 2,
+      "pixelRatio": 1,
+      "shadows": true,
+      "composer": true
+    },
+    "balanced": {
+      "fpsAverage": 59.8,
+      "fpsMin": 59.8,
+      "fpsSamples": [
+        59.8,
+        59.8,
+        59.8,
+        59.8,
+        59.8
+      ],
+      "drawCalls": 365,
+      "triangles": 54202,
+      "geometries": 201,
+      "textures": 28,
+      "detailLevel": 1,
+      "pixelRatio": 1,
+      "shadows": true,
+      "composer": true
+    },
+    "performance": {
+      "fpsAverage": 60,
+      "fpsMin": 59.8,
+      "fpsSamples": [
+        60.9,
+        59.8,
+        59.8,
+        59.8,
+        59.8
+      ],
+      "drawCalls": 235,
+      "triangles": 38286,
+      "geometries": 201,
+      "textures": 27,
+      "detailLevel": 0,
+      "pixelRatio": 1,
+      "shadows": false,
+      "composer": false
+    }
+  },
+  "modes": {
+    "exterior": {
+      "fpsAverage": 59.8,
+      "drawCalls": 393,
+      "triangles": 54202,
+      "geometries": 203,
+      "textures": 28
+    },
+    "structure": {
+      "fpsAverage": 59.8,
+      "drawCalls": 394,
+      "triangles": 59188,
+      "geometries": 284,
+      "textures": 31
+    },
+    "energy": {
+      "fpsAverage": 59.8,
+      "drawCalls": 453,
+      "triangles": 63820,
+      "geometries": 334,
+      "textures": 31
+    },
+    "technical": {
+      "fpsAverage": 59.8,
+      "drawCalls": 400,
+      "triangles": 54202,
+      "geometries": 343,
+      "textures": 31
+    }
+  },
+  "consoleErrors": [],
+  "notes": [
+    "FPS 由 requestAnimationFrame 帧数 / 真实墙钟时间计算，每 650 ms 更新一次。",
+    "Draw Calls / Triangles 取 renderer.info 在本帧的累计值，包含阴影与后处理 pass。",
+    "场景包含动态水面、体积感泛光、阴影、雷达/螺旋桨/能源粒子动画。",
+    "headless Edge 使用本机 WebGL 硬件；数值仅代表该测试机，不构成其他设备的性能保证。"
+  ]
+}
